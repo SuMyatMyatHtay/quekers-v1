@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { db } from "@/server/db";
-import { duckWordsG } from "@/server/duckwords"
+import { duckWordsG } from "@/server/duckwords";
 
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "@/server/api/trpc";
 
@@ -105,6 +105,7 @@ export const wordRouter = createTRPCRouter({
             try {
                 const words = input.sentence.split(' ');
                 const results: string[] = [];
+
                 let scpCheck: number;
                 scpCheck = 0;
                 for (const wordTemp of words) {
@@ -119,7 +120,6 @@ export const wordRouter = createTRPCRouter({
                     else {
                         scpCheck = 0;
                     }
-
                     const search = await db.word.findFirst({
                         where: {
                             humanWord: word,
