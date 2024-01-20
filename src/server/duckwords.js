@@ -447,6 +447,8 @@ export const duckWordsG = [
     "guakguak",
     "gueekgueek",
     "gogonua",
+    "hubbyacheche",
+    "hubbybee",
     "nonoquacke",
     "kweek",
     "kikik",

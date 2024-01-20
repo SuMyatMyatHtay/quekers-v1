@@ -105,8 +105,21 @@ export const wordRouter = createTRPCRouter({
             try {
                 const words = input.sentence.split(' ');
                 const results: string[] = [];
+                let scpCheck: number;
+                scpCheck = 0;
+                for (const wordTemp of words) {
 
-                for (const word of words) {
+                    const specialCharacterPattern = /[!.,?]/;
+                    const word = wordTemp.replace(specialCharacterPattern, "")
+
+                    if (specialCharacterPattern.test(wordTemp) == true && scpCheck == 0) {
+                        results.push("UwU");
+                        scpCheck++;
+                    }
+                    else {
+                        scpCheck = 0;
+                    }
+
                     const search = await db.word.findFirst({
                         where: {
                             humanWord: word,
