@@ -107,19 +107,14 @@ export const wordRouter = createTRPCRouter({
                 const results: string[] = [];
 
                 let scpCheck: number;
-                scpCheck = 0;
                 for (const wordTemp of words) {
 
-                    const specialCharacterPattern = /[!.,?]/;
+                    const specialCharacterPattern = /[!.,?]/g;
                     const word = wordTemp.replace(specialCharacterPattern, "")
 
-                    if (specialCharacterPattern.test(wordTemp) == true && scpCheck == 0) {
-                        results.push("UwU");
-                        scpCheck++;
-                    }
-                    else {
-                        scpCheck = 0;
-                    }
+                    const fullStopPattern = /[.,]/g;
+                    const harshWordPattern = /[!?]/g;
+
                     const search = await db.word.findFirst({
                         where: {
                             humanWord: word,
@@ -168,6 +163,7 @@ export const wordRouter = createTRPCRouter({
                                         console.log(`No potential words 1 found for "${resultAsString}".`);
                                         results.push(word);
                                     }
+
                                 } else {
                                     console.log(`No potential words 2 found for "${resultAsString}".`);
                                     results.push(word);
@@ -182,6 +178,15 @@ export const wordRouter = createTRPCRouter({
                         await printHighestMatchingWord(word);
 
                     }
+                    if (harshWordPattern.test(wordTemp) == true) {
+                        results.push("UwU");
+                    }
+                    else if (fullStopPattern.test(wordTemp) == true) {
+                        const matches = wordTemp.match(fullStopPattern);
+
+                        results.push(matches ? matches.join('') : '');
+                    }
+
                 }
                 const updatedSentence = results.join(' ');
                 return { sentence: updatedSentence };
