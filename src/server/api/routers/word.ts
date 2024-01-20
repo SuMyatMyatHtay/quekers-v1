@@ -158,7 +158,7 @@ export const wordRouter = createTRPCRouter({
                                     if (highestMatchingWord) {
                                         //setDuckWord(highestMatchingWord);
                                         console.log(`Highest matching word: ${highestMatchingWord}, Matching Middle Alphabets: [${[...getMiddleAlphabets(highestMatchingWord).split('')].join(', ')}], Matching Percentage: ${highestMatchingPercentage}%`);
-                                        if (result.charAt(0) === word.charAt(0).toUpperCase()) {
+                                        if (result.startsWith(word.charAt(0).toUpperCase())) {
                                             results.push(highestMatchingWord.charAt(0).toUpperCase() + highestMatchingWord.slice(1));
                                         }
                                         else {
