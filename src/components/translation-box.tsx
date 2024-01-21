@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 import { useState } from "react";
 
@@ -19,6 +20,8 @@ import { error } from "console";
 const TranslationBox = () => {
   const [copied, setCopied] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [duckWord, setDuckWord] = useState<string | undefined>(undefined);
   const [humanWord, setHumanWord] = useState<string | undefined>(undefined);
@@ -74,6 +77,7 @@ const TranslationBox = () => {
         let newDuckWord = "";
         result.forEach((item) => {
           if (item?.sentence) {
+            console.log(item.sentence);
             newDuckWord += " " + item.sentence;
           }
         });
@@ -82,17 +86,9 @@ const TranslationBox = () => {
         if (newDuckWord === humanWord) {
           noMatchError();
         }
+        setIsLoading(false);
         setDuckWord(newDuckWord);
       }
-
-      //   const result = await htdMutation.mutateAsync({
-      //     sentence: humanWord ?? "",
-      //   });
-
-      //   if (result?.sentence == humanWord) {
-      //     noMatchError();
-      //   }
-      //   setDuckWord(result?.sentence ?? humanWord ?? "");
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -173,9 +169,15 @@ const TranslationBox = () => {
           <div>
             <Button
               className="bg-sky-600 hover:bg-blue-700"
-              onClick={() => handleTranslate("human")}
-              disabled={!humanWord ?? humanWord == ""}
+              onClick={() => {
+                setIsLoading(true);
+                handleTranslate("human");
+              }}
+              disabled={!humanWord || humanWord === "" || isLoading}
             >
+              {isLoading && (
+                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+              )}
               Translate
             </Button>
           </div>
