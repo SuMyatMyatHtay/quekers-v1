@@ -169,9 +169,9 @@ const TranslationBox = () => {
           <div>
             <Button
               className="bg-sky-600 hover:bg-blue-700"
-              onClick={() => {
+              onClick={async () => {
                 setIsLoading(true);
-                handleTranslate("human");
+                await handleTranslate("human");
               }}
               disabled={!humanWord || humanWord === "" || isLoading}
             >
